@@ -1,0 +1,37 @@
+name: order_attribution_refresh
+
+on:
+  schedule:
+    # GitHub cron 是 UTC
+    # 08:00 LA(冬令时UTC-8) => 16:00 UTC
+    # 14:00 LA => 22:00 UTC
+    # 20:00 LA => 04:00 UTC (次日)
+    - cron: "0 16 * * *"
+    - cron: "0 22 * * *"
+    - cron: "0 4  * * *"
+    - cron: "0 0  * * *"
+  workflow_dispatch: {}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run job
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+          DAYS: "2"
+          GROUP_CONCAT_MAX_LEN: "1000000"
+        run: python run.py
