@@ -212,8 +212,6 @@ INSERT INTO caguuu_report.order_attribution (
 	
 	) result
 	ORDER BY result.checkout_time desc
-	    ;
-END
 ;
 """
 
