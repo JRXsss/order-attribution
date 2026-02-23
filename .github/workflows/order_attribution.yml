@@ -8,8 +8,8 @@ on:
   #   # 20:00 LA => 04:00 UTC (次日)
   #   - cron: "0 16 * * *"
   #   - cron: "0 22 * * *"
-    - cron: "0 4  * * *"
-    - cron: "0 0  * * *"
+    # - cron: "0 4  * * *"
+    # - cron: "0 0  * * *"
   workflow_dispatch: {}
 
 jobs:
