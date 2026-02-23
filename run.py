@@ -223,7 +223,7 @@ def main():
         port=int(os.getenv("MYSQL_PORT", "3306")),
         user=os.environ["MYSQL_USER"],
         password=os.environ["MYSQL_PASSWORD"],
-        db=os.environ.get("MYSQL_DB", "caguuu_erp"),
+        db=os.environ.get("MYSQL_DB", "caguuu_report"),
         charset="utf8mb4",
         autocommit=True,
     )
