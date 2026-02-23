@@ -1,13 +1,13 @@
 name: order_attribution_refresh
 
 on:
-  schedule:
-    # GitHub cron 是 UTC
-    # 08:00 LA(冬令时UTC-8) => 16:00 UTC
-    # 14:00 LA => 22:00 UTC
-    # 20:00 LA => 04:00 UTC (次日)
-    - cron: "0 16 * * *"
-    - cron: "0 22 * * *"
+  # schedule:
+  #   # GitHub cron 是 UTC
+  #   # 08:00 LA(冬令时UTC-8) => 16:00 UTC
+  #   # 14:00 LA => 22:00 UTC
+  #   # 20:00 LA => 04:00 UTC (次日)
+  #   - cron: "0 16 * * *"
+  #   - cron: "0 22 * * *"
     - cron: "0 4  * * *"
     - cron: "0 0  * * *"
   workflow_dispatch: {}
