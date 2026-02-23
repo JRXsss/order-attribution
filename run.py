@@ -220,7 +220,7 @@ END
 def main():
     conn = pymysql.connect(
         host=os.environ["MYSQL_HOST"],
-        port=int(os.getenv("MYSQL_PORT", "3306")),
+        port=int((os.getenv("MYSQL_PORT") or "3306").strip()),
         user=os.environ["MYSQL_USER"],
         password=os.environ["MYSQL_PASSWORD"],
         db=os.environ.get("MYSQL_DB", "caguuu_report"),
