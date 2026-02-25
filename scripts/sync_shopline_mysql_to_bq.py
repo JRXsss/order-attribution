@@ -31,8 +31,8 @@ def main():
         "BQ_TABLE",
         "project-fddee9ed-d147-4ffe-b75.From_mysql.shopline_order_statistics"
     )  # full: project.dataset.table
-    mysql_table = env("MYSQL_TABLE")
-    lookback_days = int(os.getenv("LOOKBACK_DAYS", "7"))
+    mysql_table = os.getenv("MYSQL_TABLE", "shopline_order_statistics")
+    lookback_days = int(os.getenv("LOOKBACK_DAYS", "3"))
 
     bq = bigquery.Client(project=project_id)
 
