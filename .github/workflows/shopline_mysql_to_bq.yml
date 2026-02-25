@@ -1,0 +1,48 @@
+name: Shopline MySQL -> BigQuery (daily refresh)
+
+on:
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: "Refresh last N days (default 7)"
+        required: false
+        default: "7"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pymysql pandas google-cloud-bigquery google-auth
+
+      - name: Write GCP service account key to file
+        env:
+          GCP_SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
+        run: |
+          echo "$GCP_SA_KEY_JSON" > /tmp/gcp_sa.json
+
+      - name: Run sync
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+          GCP_PROJECT_ID: project-fddee9ed-d147-4ffe-b75
+          BQ_TABLE: project-fddee9ed-d147-4ffe-b75.From_mysql.shopline_order_statistics
+
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+          MYSQL_TABLE: ${{ secrets.MYSQL_TABLE }}
+
+          LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days }}
+        run: |
+          python scripts/sync_shopline_mysql_to_bq.py
